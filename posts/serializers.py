@@ -18,8 +18,9 @@ class PostSerializer(serializers.ModelSerializer):
         return Post.objects.create(author=self.context['request'].user, **validated_data)
     
 class CommentSerializer(serializers.ModelSerializer):
-    author_username = serializers.CharField(source='author.username', read_only=True)
+    author_username = serializers.ReadOnlyField(source='author.username')
 
     class Meta:
         model = Comment
         fields = ['id', 'post', 'author', 'author_username', 'content', 'created']
+        read_only_fields = ['author', 'created']
