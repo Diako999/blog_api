@@ -40,9 +40,12 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated]
-
+    def get_queryset(self):
+        post_id = self.request.query_params.get('post')
+        if post_id:
+            return Comment.objects.filter(post=post_id).order_by('-created')
+        return Comment.objects.none()
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
