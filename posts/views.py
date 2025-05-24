@@ -49,3 +49,9 @@ class CommentViewSet(viewsets.ModelViewSet):
         return Comment.objects.none()
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+    def destroy(self, request, *args, **kwargs):
+        comment = self.get_object()
+        if comment.author != request.user:
+            return Response({'error': 'Not allowed'}, status=403)
+        return super().destroy(request, *args, **kwargs)

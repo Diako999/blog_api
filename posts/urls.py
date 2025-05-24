@@ -6,7 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
 
 router = DefaultRouter()
 router.register(r'posts', PostViewSet)
-router.register(r'comments', CommentViewSet, basename='comment')  
+router.register(r'comments', CommentViewSet, basename='comments')  
 
 urlpatterns = [
     path('', include(router.urls)),
